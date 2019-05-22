@@ -74,6 +74,7 @@ steps:
   displayName: 'Copy Packaging Files to: $(Build.ArtifactStagingDirectory)'
   inputs:
     Contents: |
+        Content/readme.txt
         LICENSE.md
         NOTICES
         COPYING
