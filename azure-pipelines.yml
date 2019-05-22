@@ -28,6 +28,43 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '**/bin/"$(buildConfiguration)"/net45/'
+    Contents: '**'
+    TargetFolder: '$(build.artifactStagingDirectory)/net45'
+    OverWrite: true
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '**/bin/"$(buildConfiguration)"/net46/'
+    Contents: '**'
+    TargetFolder: '$(build.artifactStagingDirectory)/net46'
+    OverWrite: true
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '**/bin/"$(buildConfiguration)"/netstandard1.3/'
+    Contents: '**'
+    TargetFolder: '$(build.artifactStagingDirectory)/netstandard1.3'
+    OverWrite: true
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '**/bin/"$(buildConfiguration)"/netstandard2.0/'
+    Contents: '**'
+    TargetFolder: '$(build.artifactStagingDirectory)/netstandard2.0'
+    OverWrite: true
+- task: CopyFiles@2
+  displayName: 'Copy Packaging Files to: $(Build.ArtifactStagingDirectory)'
+  inputs:
+    Contents: |
+        nuspecs/*.nuspec
+        LICENSE.md
+        NOTICES
+        COPYING
+        COPYING.LESSER
+        LICENSE_STANDARD
+        LICENSE_ROYALTYFREE
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
 #- task: VSTest@2
 #  inputs:
 #    platform: '$(buildPlatform)'
@@ -37,18 +74,17 @@ steps:
   inputs:
     command: 'pack'
     feedsToUse: 'select'
-    packagesToPack: '**/nuspecs/*.nuspec'
-    versioningScheme: 'byPrereleaseNumber'
-    majorVersion: '1'
-    minorVersion: '0'
-    patchVersion: '0'
+    packagesToPack: '$(Build.ArtifactStagingDirectory)/*.nuspec'
+    versioningScheme: 'off'
     includeSymbols: true
+    basePath: '$(Build.ArtifactStagingDirectory)'
+    packDestination: '$(Build.ArtifactStagingDirectory)'
 
 - task: NuGetCommand@2
   inputs:
     command: 'push'
     feedsToUse: 'select'
-    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
     nuGetFeedType: 'internal'
     publishVstsFeed: 'internal'
     versioningScheme: 'off'
