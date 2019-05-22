@@ -93,8 +93,10 @@ steps:
     command: 'pack'
     feedsToUse: 'select'
     packagesToPack: '$(Build.SourcesDirectory)/bin/*.nuspec'
-    versioningScheme: 'off'
-    includeSymbols: true
+    versioningScheme: 'byPrereleaseNumber'
+    majorVersion: '1'
+    minorVersion: '0'
+    patchVersion: '0'
     basePath: '$(Build.SourcesDirectory)/bin'
     packDestination: '$(Build.SourcesDirectory)/bin'
 
