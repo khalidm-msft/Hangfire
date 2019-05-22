@@ -28,27 +28,92 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: 'src/Hangfire.Core/bin/$(buildConfiguration)'
+    Contents: '**'
+    TargetFolder: 'bin'
+    OverWrite: true
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: 'src/Hangfire.AspNetCore/bin/$(buildConfiguration)'
+    Contents: '**'
+    TargetFolder: '$(Build.SourcesDirectory)/bin'
+    OverWrite: true
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: 'src/Hangfire.NetCore/bin/$(buildConfiguration)'
+    Contents: '**'
+    TargetFolder: '$(Build.SourcesDirectory)/bin'
+    OverWrite: true
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: 'src/Hangfire.SqlServer/bin/$(buildConfiguration)'
+    Contents: '**'
+    TargetFolder: '$(Build.SourcesDirectory)/bin'
+    OverWrite: true
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: 'src/Hangfire.SqlServer'
+    Contents: '*.sql'
+    TargetFolder: '$(Build.SourcesDirectory)/bin/Tools'
+    OverWrite: true
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: 'src/Hangfire.SqlServer.Msmq/bin/$(buildConfiguration)'
+    Contents: '**'
+    TargetFolder: '$(Build.SourcesDirectory)/bin'
+    OverWrite: true
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: 'nuspecs'
+    Contents: '*.nuspec'
+    TargetFolder: '$(Build.SourcesDirectory)/bin'
+    OverWrite: true
+- task: CopyFiles@2
+  displayName: 'Copy Packaging Files to: $(Build.ArtifactStagingDirectory)'
+  inputs:
+    Contents: |
+        Content/readme.txt
+        LICENSE.md
+        NOTICES
+        COPYING
+        COPYING.LESSER
+        LICENSE_STANDARD
+        LICENSE_ROYALTYFREE
+    TargetFolder: '$(Build.SourcesDirectory)/bin'
+
 #- task: VSTest@2
 #  inputs:
 #    platform: '$(buildPlatform)'
 #    configuration: '$(buildConfiguration)'
+- task: EsrpCodeSigning@1
+  inputs:
+    ConnectedServiceName: 'esrp-codesign'
+    FolderPath: '$(Build.SourcesDirectory)/bin'
+    Pattern: '*.dll'
+    OpusName: 'Hangfire'
+    SessionTimeout: '60'
+    MaxConcurrency: '50'
+    MaxRetryAttempts: '5'
 
 - task: NuGetCommand@2
   inputs:
     command: 'pack'
     feedsToUse: 'select'
-    packagesToPack: '**/nuspecs/*.nuspec'
+    packagesToPack: '$(Build.SourcesDirectory)/bin/*.nuspec'
     versioningScheme: 'byPrereleaseNumber'
     majorVersion: '1'
     minorVersion: '0'
     patchVersion: '0'
-    includeSymbols: true
+    basePath: '$(Build.SourcesDirectory)/bin'
+    packDestination: '$(Build.SourcesDirectory)/bin'
 
 - task: NuGetCommand@2
   inputs:
     command: 'push'
     feedsToUse: 'select'
-    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+    packagesToPush: '$(Build.SourcesDirectory)/bin/*.nupkg'
     nuGetFeedType: 'internal'
     publishVstsFeed: 'internal'
     versioningScheme: 'off'
