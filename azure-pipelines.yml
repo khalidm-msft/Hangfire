@@ -38,31 +38,31 @@ steps:
   inputs:
     SourceFolder: 'src/Hangfire.AspNetCore/bin/$(buildConfiguration)'
     Contents: '**'
-    TargetFolder: 'bin'
+    TargetFolder: '$(Build.SourcesDirectory)/bin'
     OverWrite: true
 - task: CopyFiles@2
   inputs:
     SourceFolder: 'src/Hangfire.NetCore/bin/$(buildConfiguration)'
     Contents: '**'
-    TargetFolder: 'bin'
+    TargetFolder: '$(Build.SourcesDirectory)/bin'
     OverWrite: true
 - task: CopyFiles@2
   inputs:
     SourceFolder: 'src/Hangfire.SqlServer/bin/$(buildConfiguration)'
     Contents: '**'
-    TargetFolder: 'bin'
+    TargetFolder: '$(Build.SourcesDirectory)/bin'
     OverWrite: true
 - task: CopyFiles@2
   inputs:
     SourceFolder: 'src/Hangfire.SqlServer.Msmq/bin/$(buildConfiguration)'
     Contents: '**'
-    TargetFolder: 'bin'
+    TargetFolder: '$(Build.SourcesDirectory)/bin'
     OverWrite: true
 - task: CopyFiles@2
   inputs:
     SourceFolder: 'nuspecs'
     Contents: '*.nuspec'
-    TargetFolder: 'bin'
+    TargetFolder: '$(Build.SourcesDirectory)/bin'
     OverWrite: true
 - task: CopyFiles@2
   displayName: 'Copy Packaging Files to: $(Build.ArtifactStagingDirectory)'
@@ -74,7 +74,7 @@ steps:
         COPYING.LESSER
         LICENSE_STANDARD
         LICENSE_ROYALTYFREE
-    TargetFolder: 'bin'
+    TargetFolder: '$(Build.SourcesDirectory)/bin'
 
 #- task: VSTest@2
 #  inputs:
@@ -85,17 +85,17 @@ steps:
   inputs:
     command: 'pack'
     feedsToUse: 'select'
-    packagesToPack: '$(Build.ArtifactStagingDirectory)/*.nuspec'
+    packagesToPack: '$(Build.SourcesDirectory)/bin/*.nuspec'
     versioningScheme: 'off'
     includeSymbols: true
-    basePath: '$(Build.ArtifactStagingDirectory)'
-    packDestination: '$(Build.ArtifactStagingDirectory)'
+    basePath: '$(Build.SourcesDirectory)/bin'
+    packDestination: '$(Build.SourcesDirectory)/bin'
 
 - task: NuGetCommand@2
   inputs:
     command: 'push'
     feedsToUse: 'select'
-    packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
+    packagesToPush: '$(Build.SourcesDirectory)/bin/*.nupkg'
     nuGetFeedType: 'internal'
     publishVstsFeed: 'internal'
     versioningScheme: 'off'
