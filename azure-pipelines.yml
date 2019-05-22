@@ -32,37 +32,37 @@ steps:
   inputs:
     SourceFolder: 'src/Hangfire.Core/bin/$(buildConfiguration)'
     Contents: '**'
-    TargetFolder: '$(build.artifactStagingDirectory)'
+    TargetFolder: 'bin'
     OverWrite: true
 - task: CopyFiles@2
   inputs:
     SourceFolder: 'src/Hangfire.AspNetCore/bin/$(buildConfiguration)'
     Contents: '**'
-    TargetFolder: '$(build.artifactStagingDirectory)'
+    TargetFolder: 'bin'
     OverWrite: true
 - task: CopyFiles@2
   inputs:
     SourceFolder: 'src/Hangfire.NetCore/bin/$(buildConfiguration)'
     Contents: '**'
-    TargetFolder: '$(build.artifactStagingDirectory)'
+    TargetFolder: 'bin'
     OverWrite: true
 - task: CopyFiles@2
   inputs:
     SourceFolder: 'src/Hangfire.SqlServer/bin/$(buildConfiguration)'
     Contents: '**'
-    TargetFolder: '$(build.artifactStagingDirectory)'
+    TargetFolder: 'bin'
     OverWrite: true
 - task: CopyFiles@2
   inputs:
     SourceFolder: 'src/Hangfire.SqlServer.Msmq/bin/$(buildConfiguration)'
     Contents: '**'
-    TargetFolder: '$(build.artifactStagingDirectory)'
+    TargetFolder: 'bin'
     OverWrite: true
 - task: CopyFiles@2
   inputs:
     SourceFolder: 'nuspecs'
     Contents: '*.nuspec'
-    TargetFolder: '$(build.artifactStagingDirectory)'
+    TargetFolder: 'bin'
     OverWrite: true
 - task: CopyFiles@2
   displayName: 'Copy Packaging Files to: $(Build.ArtifactStagingDirectory)'
@@ -74,7 +74,7 @@ steps:
         COPYING.LESSER
         LICENSE_STANDARD
         LICENSE_ROYALTYFREE
-    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    TargetFolder: 'bin'
 
 #- task: VSTest@2
 #  inputs:
