@@ -2,7 +2,6 @@
 <package>
   <metadata>
     <id>Hangfire.NetCore</id>
-    <version>0.0.0</version>
     <title>Hangfire .NET Core's Worker Service Support</title>
     <authors>Sergey Odinokov</authors>
     <owners>odinserj</owners>

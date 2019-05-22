@@ -2,7 +2,6 @@
 <package>
   <metadata>
     <id>Hangfire.SqlServer.MSMQ</id>
-    <version>0.0.0</version>
     <title>Hangfire MSMQ Queues for SQL Server Storage</title>
     <authors>Sergey Odinokov</authors>
     <owners>odinserj</owners>

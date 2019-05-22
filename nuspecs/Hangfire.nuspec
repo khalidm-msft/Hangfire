@@ -2,7 +2,6 @@
 <package>
   <metadata>
     <id>Hangfire</id>
-    <version>0.0.0</version>
     <title>Hangfire</title>
     <authors>Sergey Odinokov</authors>
     <owners>odinserj</owners>

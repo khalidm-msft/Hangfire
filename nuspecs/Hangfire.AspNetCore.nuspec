@@ -2,7 +2,6 @@
 <package>
   <metadata>
     <id>Hangfire.AspNetCore</id>
-    <version>0.0.0</version>
     <title>Hangfire ASP.NET Core Support</title>
     <authors>Sergey Odinokov</authors>
     <owners>odinserj</owners>
