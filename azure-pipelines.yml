@@ -30,29 +30,44 @@ steps:
 
 - task: CopyFiles@2
   inputs:
-    Contents: '**/bin/$(buildConfiguration)/net45/**'
-    TargetFolder: '$(build.artifactStagingDirectory)/net45'
+    SourceFolder: 'src/Hangfire.Core/bin/$(buildConfiguration)'
+    Contents: '**'
+    TargetFolder: '$(build.artifactStagingDirectory)'
     OverWrite: true
 - task: CopyFiles@2
   inputs:
-    Contents: '**/bin/$(buildConfiguration)/net46/**'
-    TargetFolder: '$(build.artifactStagingDirectory)/net46'
+    SourceFolder: 'src/Hangfire.AspNetCore/bin/$(buildConfiguration)'
+    Contents: '**'
+    TargetFolder: '$(build.artifactStagingDirectory)'
     OverWrite: true
 - task: CopyFiles@2
   inputs:
-    Contents: '**/bin/$(buildConfiguration)/netstandard1.3/**'
-    TargetFolder: '$(build.artifactStagingDirectory)/netstandard1.3'
+    SourceFolder: 'src/Hangfire.NetCore/bin/$(buildConfiguration)'
+    Contents: '**'
+    TargetFolder: '$(build.artifactStagingDirectory)'
     OverWrite: true
 - task: CopyFiles@2
   inputs:
-    Contents: '**/bin/$(buildConfiguration)/netstandard2.0/**'
-    TargetFolder: '$(build.artifactStagingDirectory)/netstandard2.0'
+    SourceFolder: 'src/Hangfire.SqlServer/bin/$(buildConfiguration)'
+    Contents: '**'
+    TargetFolder: '$(build.artifactStagingDirectory)'
+    OverWrite: true
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: 'src/Hangfire.SqlServer.Msmq/bin/$(buildConfiguration)'
+    Contents: '**'
+    TargetFolder: '$(build.artifactStagingDirectory)'
+    OverWrite: true
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: 'nuspecs'
+    Contents: '*.nuspec'
+    TargetFolder: '$(build.artifactStagingDirectory)'
     OverWrite: true
 - task: CopyFiles@2
   displayName: 'Copy Packaging Files to: $(Build.ArtifactStagingDirectory)'
   inputs:
     Contents: |
-        nuspecs/*.nuspec
         LICENSE.md
         NOTICES
         COPYING
