@@ -109,16 +109,6 @@ steps:
     basePath: '$(Build.SourcesDirectory)/bin'
     packDestination: '$(Build.SourcesDirectory)/bin'
 
-- task: EsrpCodeSigning@1
-  inputs:
-    ConnectedServiceName: 'esrp-codesign'
-    FolderPath: '$(Build.SourcesDirectory)/bin'
-    Pattern: '*.nupkg'
-    OpusName: 'Hangfire'
-    SessionTimeout: '60'
-    MaxConcurrency: '50'
-    MaxRetryAttempts: '5'
-
 - task: NuGetCommand@2
   inputs:
     command: 'push'
