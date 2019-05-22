@@ -54,6 +54,12 @@ steps:
     OverWrite: true
 - task: CopyFiles@2
   inputs:
+    SourceFolder: 'src/Hangfire.SqlServer'
+    Contents: '*.sql'
+    TargetFolder: '$(Build.SourcesDirectory)/bin/Tools'
+    OverWrite: true
+- task: CopyFiles@2
+  inputs:
     SourceFolder: 'src/Hangfire.SqlServer.Msmq/bin/$(buildConfiguration)'
     Contents: '**'
     TargetFolder: '$(Build.SourcesDirectory)/bin'
