@@ -38,7 +38,10 @@ steps:
     command: 'pack'
     feedsToUse: 'select'
     packagesToPack: '**/nuspecs/*.nuspec'
-    versioningScheme: 'byBuildNumber'
+    versioningScheme: 'byPrereleaseNumber'
+    majorVersion: '1'
+    minorVersion: '0'
+    patchVersion: '0'
     includeSymbols: true
 
 - task: NuGetCommand@2
