@@ -30,26 +30,22 @@ steps:
 
 - task: CopyFiles@2
   inputs:
-    SourceFolder: '**/bin/"$(buildConfiguration)"/net45/'
-    Contents: '**'
+    Contents: '**/bin/$(buildConfiguration)/net45/**'
     TargetFolder: '$(build.artifactStagingDirectory)/net45'
     OverWrite: true
 - task: CopyFiles@2
   inputs:
-    SourceFolder: '**/bin/"$(buildConfiguration)"/net46/'
-    Contents: '**'
+    Contents: '**/bin/$(buildConfiguration)/net46/**'
     TargetFolder: '$(build.artifactStagingDirectory)/net46'
     OverWrite: true
 - task: CopyFiles@2
   inputs:
-    SourceFolder: '**/bin/"$(buildConfiguration)"/netstandard1.3/'
-    Contents: '**'
+    Contents: '**/bin/$(buildConfiguration)/netstandard1.3/**'
     TargetFolder: '$(build.artifactStagingDirectory)/netstandard1.3'
     OverWrite: true
 - task: CopyFiles@2
   inputs:
-    SourceFolder: '**/bin/"$(buildConfiguration)"/netstandard2.0/'
-    Contents: '**'
+    Contents: '**/bin/$(buildConfiguration)/netstandard2.0/**'
     TargetFolder: '$(build.artifactStagingDirectory)/netstandard2.0'
     OverWrite: true
 - task: CopyFiles@2
