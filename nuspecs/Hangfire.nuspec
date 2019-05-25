@@ -2,7 +2,6 @@
 <package>
   <metadata>
     <id>Hangfire</id>
-    <version>0.0.0</version>
     <title>Hangfire</title>
     <authors>Sergey Odinokov</authors>
     <owners>odinserj</owners>
@@ -174,19 +173,19 @@ Hangfire.SqlServer
     </releaseNotes>
     <dependencies>
       <group targetFramework="net45">
-        <dependency id="Hangfire.Core" version="[0.0.0]" />
-        <dependency id="Hangfire.SqlServer" version="[0.0.0]" />
+        <dependency id="Hangfire.Core" />
+        <dependency id="Hangfire.SqlServer" />
         <dependency id="Microsoft.Owin.Host.SystemWeb" version="3.0.0" />
       </group>
       <group targetFramework="netstandard1.3">
-        <dependency id="Hangfire.Core" version="[0.0.0]" />
-        <dependency id="Hangfire.SqlServer" version="[0.0.0]" />
-        <dependency id="Hangfire.AspNetCore" version="[0.0.0]" />
+        <dependency id="Hangfire.Core" />
+        <dependency id="Hangfire.SqlServer" />
+        <dependency id="Hangfire.AspNetCore" />
       </group>
       <group targetFramework="netstandard2.0">
-        <dependency id="Hangfire.Core" version="[0.0.0]" />
-        <dependency id="Hangfire.SqlServer" version="[0.0.0]" />
-        <dependency id="Hangfire.AspNetCore" version="[0.0.0]" />
+        <dependency id="Hangfire.Core" />
+        <dependency id="Hangfire.SqlServer" />
+        <dependency id="Hangfire.AspNetCore" />
       </group>
     </dependencies>
   </metadata>
