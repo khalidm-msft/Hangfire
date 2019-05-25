@@ -2,6 +2,7 @@
 <package>
   <metadata>
     <id>Hangfire.SqlServer.MSMQ</id>
+    <version>0.0.0</version>
     <title>Hangfire MSMQ Queues for SQL Server Storage</title>
     <authors>Sergey Odinokov</authors>
     <owners>odinserj</owners>
@@ -33,8 +34,8 @@
 • Fixed – Incorrect order of fetching when multiple queues used.
     </releaseNotes>
     <dependencies>
-      <dependency id="Hangfire.Core" />
-      <dependency id="Hangfire.SqlServer" />
+      <dependency id="Hangfire.Core" version="[0.0.0]" />
+      <dependency id="Hangfire.SqlServer" version="[0.0.0]" />
     </dependencies>
   </metadata>
   <files>

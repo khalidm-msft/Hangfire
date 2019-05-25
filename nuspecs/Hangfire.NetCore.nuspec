@@ -2,6 +2,7 @@
 <package>
   <metadata>
     <id>Hangfire.NetCore</id>
+    <version>0.0.0</version>
     <title>Hangfire .NET Core's Worker Service Support</title>
     <authors>Sergey Odinokov</authors>
     <owners>odinserj</owners>
@@ -25,7 +26,7 @@
         <dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" version="2.0.0" />
         <dependency id="Microsoft.Extensions.Hosting.Abstractions" version="2.0.0" />
         <dependency id="Microsoft.Extensions.Logging.Abstractions" version="2.0.0" />
-        <dependency id="Hangfire.Core" />
+        <dependency id="Hangfire.Core" version="[0.0.0]" />
       </group>
     </dependencies>
   </metadata>
