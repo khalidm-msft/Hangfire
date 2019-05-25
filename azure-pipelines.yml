@@ -4,7 +4,7 @@
 # https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
 
 trigger:
-- master
+- StableBuild
 
 pool:
   vmImage: 'windows-latest'
@@ -15,105 +15,16 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- task: NuGetToolInstaller@0
-
-- task: NuGetCommand@2
+- task: BatchScript@1
   inputs:
-    restoreSolution: '$(solution)'
-
-- task: VSBuild@1
-  inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-
-- task: CopyFiles@2
-  inputs:
-    SourceFolder: 'src/Hangfire.Core/bin/$(buildConfiguration)'
-    Contents: '**'
-    TargetFolder: 'bin'
-    OverWrite: true
-- task: CopyFiles@2
-  inputs:
-    SourceFolder: 'src/Hangfire.AspNetCore/bin/$(buildConfiguration)'
-    Contents: '**'
-    TargetFolder: '$(Build.SourcesDirectory)/bin'
-    OverWrite: true
-- task: CopyFiles@2
-  inputs:
-    SourceFolder: 'src/Hangfire.NetCore/bin/$(buildConfiguration)'
-    Contents: '**'
-    TargetFolder: '$(Build.SourcesDirectory)/bin'
-    OverWrite: true
-- task: CopyFiles@2
-  inputs:
-    SourceFolder: 'src/Hangfire.SqlServer/bin/$(buildConfiguration)'
-    Contents: '**'
-    TargetFolder: '$(Build.SourcesDirectory)/bin'
-    OverWrite: true
-- task: CopyFiles@2
-  inputs:
-    SourceFolder: 'src/Hangfire.SqlServer'
-    Contents: '*.sql'
-    TargetFolder: '$(Build.SourcesDirectory)/bin/Tools'
-    OverWrite: true
-- task: CopyFiles@2
-  inputs:
-    SourceFolder: 'src/Hangfire.SqlServer.Msmq/bin/$(buildConfiguration)'
-    Contents: '**'
-    TargetFolder: '$(Build.SourcesDirectory)/bin'
-    OverWrite: true
-- task: CopyFiles@2
-  inputs:
-    SourceFolder: 'nuspecs'
-    Contents: '*.nuspec'
-    TargetFolder: '$(Build.SourcesDirectory)/bin'
-    OverWrite: true
-- task: CopyFiles@2
-  displayName: 'Copy Packaging Files to: $(Build.ArtifactStagingDirectory)'
-  inputs:
-    Contents: |
-        Content/readme.txt
-        LICENSE.md
-        NOTICES
-        COPYING
-        COPYING.LESSER
-        LICENSE_STANDARD
-        LICENSE_ROYALTYFREE
-    TargetFolder: '$(Build.SourcesDirectory)/bin'
-
-#- task: VSTest@2
-#  inputs:
-#    platform: '$(buildPlatform)'
-#    configuration: '$(buildConfiguration)'
-- task: EsrpCodeSigning@1
-  inputs:
-    ConnectedServiceName: 'esrp-codesign'
-    FolderPath: '$(Build.SourcesDirectory)/bin'
-    Pattern: '*.dll'
-    OpusName: 'Hangfire'
-    SessionTimeout: '60'
-    MaxConcurrency: '50'
-    MaxRetryAttempts: '5'
-
-- task: NuGetCommand@2
-  inputs:
-    command: 'pack'
-    feedsToUse: 'select'
-    packagesToPack: '$(Build.SourcesDirectory)/bin/*.nuspec'
-    versioningScheme: 'byPrereleaseNumber'
-    majorVersion: '1'
-    minorVersion: '0'
-    patchVersion: '0'
-    basePath: '$(Build.SourcesDirectory)/bin'
-    packDestination: '$(Build.SourcesDirectory)/bin'
+    filename: 'build.bat'
+    arguments: 'pack'
 
 - task: NuGetCommand@2
   inputs:
     command: 'push'
     feedsToUse: 'select'
-    packagesToPush: '$(Build.SourcesDirectory)/bin/*.nupkg'
+    packagesToPush: '$(Build.SourcesDirectory)/Build/*.nupkg'
     nuGetFeedType: 'internal'
     publishVstsFeed: 'internal'
     versioningScheme: 'off'
