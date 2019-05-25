@@ -20,12 +20,11 @@ steps:
     versionSpec: '5.0.2'
     checkLatest: true
 
-- task: PkgESInstallNuGetToolsPackage@10
+- task: NuGetCommand@2
+  displayName: 'NuGet install StrongNameSigner'
   inputs:
-        packageName: 'Brutal.Dev.StrongNameSigner'
-        packageVersion: '2.3.0'
-        addToFrontPath: false
-        installRoot: '$(Build.SourcesDirectory)/Packages'
+    command: custom
+    arguments: 'install Brutal.Dev.StrongNameSigner -Source https://api.nuget.org/v3/index.json -outputDirectory $(Build.SourcesDirectory)/Packages'
 
 - task: BatchScript@1
   inputs:
