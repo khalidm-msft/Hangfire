@@ -29,7 +29,7 @@ steps:
 
 - task: CmdLine@2
   inputs:
-    script: 'echo $(version) | build Version'
+    script: 'echo $(version)| build Version'
             
 - task: BatchScript@1
   inputs:
