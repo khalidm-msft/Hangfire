@@ -13,7 +13,7 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
-  version: 1.7.2.3
+  version: 1.7.2.4
 
 steps:
 - task: NuGetToolInstaller@1
@@ -44,4 +44,3 @@ steps:
     nuGetFeedType: 'internal'
     publishVstsFeed: 'internal'
     versioningScheme: 'off'
-    
