@@ -27,11 +27,10 @@ steps:
     command: custom
     arguments: 'install Brutal.Dev.StrongNameSigner -Source https://api.nuget.org/v3/index.json -outputDirectory $(Build.SourcesDirectory)/Packages'
 
-- task: BatchScript@1
+- task: CmdLine@2
   inputs:
-    filename: 'echo'
-    arguments: '$version | build.bat Version'
-
+    script: 'echo $version | build Version'
+            
 - task: BatchScript@1
   inputs:
     filename: 'build.bat'
