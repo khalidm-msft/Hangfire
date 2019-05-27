@@ -40,7 +40,7 @@ steps:
   inputs:
     command: 'push'
     feedsToUse: 'select'
-    packagesToPush: '$(Build.SourcesDirectory)/Build/*.nupkg'
+    packagesToPush: '$(Build.SourcesDirectory)/Build/*.$(version).nupkg'
     nuGetFeedType: 'internal'
     publishVstsFeed: 'internal'
     versioningScheme: 'off'
