@@ -13,42 +13,34 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
+  version: 1.7.2.6
 
 steps:
-- task: NuGetToolInstaller@0
+- task: NuGetToolInstaller@1
+  inputs:
+    versionSpec: '5.0.2'
+    checkLatest: true
 
 - task: NuGetCommand@2
+  displayName: 'NuGet install StrongNameSigner'
   inputs:
-    restoreSolution: '$(solution)'
+    command: custom
+    arguments: 'install Brutal.Dev.StrongNameSigner -Source https://api.nuget.org/v3/index.json -outputDirectory $(Build.SourcesDirectory)/Packages'
 
-- task: VSBuild@1
+- task: CmdLine@2
   inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-
-#- task: VSTest@2
-#  inputs:
-#    platform: '$(buildPlatform)'
-#    configuration: '$(buildConfiguration)'
-
-- task: NuGetCommand@2
+    script: 'echo $(version)| build Version'
+            
+- task: BatchScript@1
   inputs:
-    command: 'pack'
-    feedsToUse: 'select'
-    packagesToPack: '**/nuspecs/*.nuspec'
-    versioningScheme: 'byPrereleaseNumber'
-    majorVersion: '1'
-    minorVersion: '0'
-    patchVersion: '0'
-    includeSymbols: true
+    filename: 'build.bat'
+    arguments: 'CI'
 
 - task: NuGetCommand@2
   inputs:
     command: 'push'
     feedsToUse: 'select'
-    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+    packagesToPush: '$(Build.SourcesDirectory)/Build/*.$(version).nupkg'
     nuGetFeedType: 'internal'
     publishVstsFeed: 'internal'
     versioningScheme: 'off'

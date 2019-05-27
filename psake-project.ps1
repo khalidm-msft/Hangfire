@@ -5,7 +5,7 @@ Task Default -Depends Collect
 Task CI -Depends Pack
 
 Task Build -Depends Clean -Description "Restore all the packages and build the whole solution." {
-    Exec { dotnet build -c Release }
+    Exec { dotnet build -c Release -p:signassembly=true -p:delaysign=true -p:AssemblyOriginatorKeyFile="$base_dir\Hangfire.snk" }
 }
 
 Task Merge -Depends Build -Description "Run ILRepack /internalize to merge required assemblies." {
@@ -16,23 +16,23 @@ Task Merge -Depends Build -Description "Run ILRepack /internalize to merge requi
     # Referenced packages aren't copied to the output folder in .NET Core <= 2.X. To make ILRepack run,
     # we need to copy them using the `dotnet publish` command prior to merging them. In .NET Core 3.0
     # everything should be working without this extra step.
-    Publish-Assembly "Hangfire.Core" "netstandard1.3"
-    Publish-Assembly "Hangfire.Core" "netstandard2.0"
-    Publish-Assembly "Hangfire.SqlServer" "netstandard1.3"
-    Publish-Assembly "Hangfire.SqlServer" "netstandard2.0"
+    # Publish-Assembly "Hangfire.Core" "netstandard1.3"
+    # Publish-Assembly "Hangfire.Core" "netstandard2.0"
+    # Publish-Assembly "Hangfire.SqlServer" "netstandard1.3"
+    # Publish-Assembly "Hangfire.SqlServer" "netstandard2.0"
     
-    Repack-Assembly @("Hangfire.Core", "netstandard1.3") @("Cronos")
-    Repack-Assembly @("Hangfire.Core", "netstandard2.0") @("Cronos")
-    Repack-Assembly @("Hangfire.SqlServer", "netstandard1.3") @("Dapper")
-    Repack-Assembly @("Hangfire.SqlServer", "netstandard2.0") @("Dapper")
+    # Repack-Assembly @("Hangfire.Core", "netstandard1.3") @("Cronos")
+    # Repack-Assembly @("Hangfire.Core", "netstandard2.0") @("Cronos")
+    # Repack-Assembly @("Hangfire.SqlServer", "netstandard1.3") @("Dapper")
+    # Repack-Assembly @("Hangfire.SqlServer", "netstandard2.0") @("Dapper")
 }
 
 Task Test -Depends Merge -Description "Run unit and integration tests against merged assemblies." {
     # Dependencies shouldn't be re-built, because we need to run tests against merged assemblies to test
     # the same assemblies that are distributed to users. Since the `dotnet test` command doesn't support
     # the `--no-dependencies` command directly, we need to re-build tests themselves first.
-    Exec { ls "tests\**\*.csproj" | % { dotnet build -c Release --no-dependencies $_.FullName } }
-    Exec { ls "tests\**\*.csproj" | % { dotnet test -c Release --no-build $_.FullName } }
+    # Exec { ls "tests\**\*.csproj" | % { dotnet build -c Release --no-dependencies $_.FullName } }
+    # Exec { ls "tests\**\*.csproj" | % { dotnet test -c Release --no-build $_.FullName } }
 }
 
 Task Collect -Depends Test -Description "Copy all artifacts to the build folder." {
@@ -43,22 +43,22 @@ Task Collect -Depends Test -Description "Copy all artifacts to the build folder.
 
     Collect-Assembly "Hangfire.Core" "net46"
 
-    Collect-Assembly "Hangfire.Core" "netstandard1.3"
-    Collect-Assembly "Hangfire.SqlServer" "netstandard1.3"
-    Collect-Assembly "Hangfire.AspNetCore" "netstandard1.3"
+    # Collect-Assembly "Hangfire.Core" "netstandard1.3"
+    # Collect-Assembly "Hangfire.SqlServer" "netstandard1.3"
+    # Collect-Assembly "Hangfire.AspNetCore" "netstandard1.3"
     
-    Collect-Assembly "Hangfire.Core" "netstandard2.0"
-    Collect-Assembly "Hangfire.SqlServer" "netstandard2.0"
-    Collect-Assembly "Hangfire.AspNetCore" "netstandard2.0"
-    Collect-Assembly "Hangfire.NetCore" "netstandard2.0"
+    # Collect-Assembly "Hangfire.Core" "netstandard2.0"
+    # Collect-Assembly "Hangfire.SqlServer" "netstandard2.0"
+    # Collect-Assembly "Hangfire.AspNetCore" "netstandard2.0"
+    # Collect-Assembly "Hangfire.NetCore" "netstandard2.0"
     
     Collect-Content "content\readme.txt"
     Collect-Tool "src\Hangfire.SqlServer\DefaultInstall.sql"
 
     Collect-Localizations "Hangfire.Core" "net45"
     Collect-Localizations "Hangfire.Core" "net46"
-    Collect-Localizations "Hangfire.Core" "netstandard1.3"
-    Collect-Localizations "Hangfire.Core" "netstandard2.0"
+    # Collect-Localizations "Hangfire.Core" "netstandard1.3"
+    # Collect-Localizations "Hangfire.Core" "netstandard2.0"
 
     Collect-File "LICENSE.md"
     Collect-File "NOTICES"
@@ -68,7 +68,11 @@ Task Collect -Depends Test -Description "Copy all artifacts to the build folder.
     Collect-File "LICENSE_ROYALTYFREE"
 }
 
-Task Pack -Depends Collect -Description "Create NuGet packages and archive files." {
+Task Sign -Depends Collect -Description "StrongName assemblies." {
+    Get-ChildItem $build_dir -Include *.dll -Recurse | ForEach-Object { packages\Brutal.Dev.StrongNameSigner.2.3.0\build\StrongNameSigner.Console.exe -a $_ -k Hangfire.snk }
+}
+
+Task Pack -Depends Sign -Description "Create NuGet packages and archive files." {
     $version = Get-PackageVersion
 
     Create-Archive "Hangfire-$version"
@@ -77,8 +81,8 @@ Task Pack -Depends Collect -Description "Create NuGet packages and archive files
     Create-Package "Hangfire.Core" $version
     Create-Package "Hangfire.SqlServer" $version
     Create-Package "Hangfire.SqlServer.Msmq" $version
-    Create-Package "Hangfire.AspNetCore" $version
-    Create-Package "Hangfire.NetCore" $version
+    # Create-Package "Hangfire.AspNetCore" $version
+    # Create-Package "Hangfire.NetCore" $version
 }
 
 function Collect-Localizations($project, $target) {
