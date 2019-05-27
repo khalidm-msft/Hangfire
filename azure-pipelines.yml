@@ -13,6 +13,7 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
+  version: 1.7.2.00001
 
 steps:
 - task: NuGetToolInstaller@1
@@ -28,8 +29,13 @@ steps:
 
 - task: BatchScript@1
   inputs:
+    filename: 'echo'
+    arguments: '$version | build.bat Version'
+
+- task: BatchScript@1
+  inputs:
     filename: 'build.bat'
-    arguments: 'pack'
+    arguments: 'CI'
 
 - task: NuGetCommand@2
   inputs:
@@ -39,3 +45,4 @@ steps:
     nuGetFeedType: 'internal'
     publishVstsFeed: 'internal'
     versioningScheme: 'off'
+    
