@@ -4,7 +4,7 @@
 # https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
 
 trigger:
-- StableBuild
+- master
 
 pool:
   vmImage: 'windows-latest'
@@ -13,7 +13,7 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
-  version: 1.7.2.5
+  version: 1.7.2.6
 
 steps:
 - task: NuGetToolInstaller@1
